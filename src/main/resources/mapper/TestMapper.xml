@@ -3,5 +3,13 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jk.dao.TestDao">
-
+	<delete id="StuDel">
+		delete from t_stu where id=#{id}
+	</delete>
+	<insert id="StuSave" useGeneratedKeys="true" keyProperty="id">
+		insert into t_stu(name,age,sex) values(#{name},#{age},#{sex})
+	</insert>
+	<update id="StuUpdate">
+		update t_stu set name=#{name},age=#{age},sex=#{sex} where id=#{id}
+	</update>
 </mapper>
