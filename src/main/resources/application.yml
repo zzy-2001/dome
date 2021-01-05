@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+#配置数据库连接信息
+spring:
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/20068?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: zzy12345
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: localhost:9300
+      repositories:
+        enabled: true
+
+mybatis:
+  #mybatisxml文件的地址
+  mapper-locations: classpath:mapper/*.xml
+  #showsql
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
