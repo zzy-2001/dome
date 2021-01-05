@@ -2,10 +2,10 @@ package com.jk.service.Impl;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.jk.dao.Esdao;
 import com.alibaba.fastjson.JSONObject;
-import com.jk.dao.EsDao;
+import com.jk.dao.Esdao;
 import com.jk.dao.TestDao;
+import com.jk.dao.zzq;
 import com.jk.pojo.GameBean;
 import com.jk.pojo.StuBean;
 import com.jk.service.TestService;
@@ -35,7 +35,7 @@ public class TestServiceImpl implements TestService {
     @Autowired
     private TestDao dao;
     @Autowired
-    private EsDao esDao;
+    private zzq esDao;
     @Autowired
     private ElasticsearchTemplate template;
 
