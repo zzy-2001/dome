@@ -5,6 +5,10 @@ import com.jk.pojo.GameBean;
 
 import java.util.HashMap;
 
+import com.jk.pojo.StuBean;
+
+import java.util.HashMap;
+
 public interface TestService {
 
     HashMap<String, Object> selectPage(GameBean bean, Integer page, Integer rows);
@@ -14,4 +18,11 @@ public interface TestService {
     void delete1(Integer integer);
 
     GameBean findById(Integer id);
+    HashMap<String, Object> select(Integer page, Integer rows);
+
+    void StuDel(Integer id);
+
+    StuBean findStuById(Integer id);
+
+    void StuSave(StuBean stu);
 }
