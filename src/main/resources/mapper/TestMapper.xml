@@ -4,4 +4,13 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jk.dao.TestDao">
 
+	<insert id="addGame" useGeneratedKeys="true" keyProperty="game_id">
+		insert into t_game values(game_id,#{game_name},#{game_type},#{game_date})
+	</insert>
+	<delete id="delete1">
+		delete from t_game where game_id = #{game_id}
+	</delete>
+	<select id="findById" resultType="com.jk.pojo.GameBean">
+		select * from t_game where game_id = #{game_id}
+	</select>
 </mapper>
