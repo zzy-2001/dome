@@ -16,26 +16,62 @@ import java.util.HashMap;
 public class TestController {
     @Autowired
     private TestService eservice;
+    /* *
+      * @Author: 张自强
+      * @Description: 学生表查询
+      * @Date: 2021/1/6 9:29
+      * @param page
+     * @param rows
+      * @Return: java.util.HashMap<java.lang.String,java.lang.Object>
+     **/
     @RequestMapping("StuSelect")
     @ResponseBody
     public HashMap<String,Object> StuSelect(Integer page,Integer rows){
         return eservice.select(page,rows);
     }
+    /* *
+      * @Author: 张自强
+      * @Description: 学生表删除
+      * @Date: 2021/1/6 9:30
+      * @param id
+      * @Return: void
+     **/
     @RequestMapping("StuDel")
     @ResponseBody
     public void StuDel(Integer id){
         eservice.StuDel(id);
     }
+    /* *
+      * @Author: 张自强
+      * @Description: 学生表回显
+      * @Date: 2021/1/6 9:30
+      * @param id
+      * @Return: com.jk.pojo.StuBean
+     **/
     @RequestMapping("findStuById")
     @ResponseBody
     public StuBean findStuById(Integer id){
         return eservice.findStuById(id);
     }
+    /* *
+      * @Author: 张自强
+      * @Description: 学生表新增修改
+      * @Date: 2021/1/6 9:30
+      * @param stu
+      * @Return: void
+     **/
     @RequestMapping("StuSave")
     @ResponseBody
     public void StuSave(StuBean stu){
         eservice.StuSave(stu);
     }
+    /* *
+      * @Author: 张自强
+      * @Description: 跳转新增页面
+      * @Date: 2021/1/6 9:30
+      * @param
+      * @Return: java.lang.String
+     **/
     @RequestMapping("toStuadd")
     public String toStuadd(){
         return "stuadd";
