@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入bootstap的css文件 -->
+    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap.css">
+    <link rel="stylesheet" href="../js/bootstrap3/css/bootstrap-theme.css">
+
+    <!-- 引入jquery文件 -->
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+
+    <!-- 引入bootstrap的js文件 -->
+    <script type="text/javascript" src="../js/bootstrap3/js/bootstrap.min.js"></script>
+
+    <!-- 引入表格的css和js文件 -->
+    <link rel="stylesheet" href="../js/bootstrap-table/bootstrap-table.css">
+    <script src="../js/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <!-- 引入弹框的js文件 -->
+    <script src="../js/bootstrap-bootbox/bootbox.js"></script>
+</head>
+</head>
+<body>
+<button type="button" onclick="openUser()" class="btn btn-warning glyphicon glyphicon-plus">新增</button>
+<table id="mytable"></table>
+</body>
+<script type="text/javascript">
+    $(function (){
+        select()
+    })
+    var res;
+    function createAddContent(url){
+        $.ajax({
+            url:url,
+            async:false,//同步，默认是：异步
+            success:function(data){
+                res = data;
+            }
+        });
+        return res;
+    }
+    function update(id){
+        bootbox.dialog({
+            title:'修改商品',
+            message: createAddContent("/test/toUserAdd"),//弹框内容
+            closeButton: true,//是否显示关闭按钮
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+                        //提交表单数据：保存
+                        $.ajax({
+                            url:'/test/addUser',//后台请求地址
+                            type:'post',
+                            data:$("#userForm").serialize(),//表单序列化
+                            //dataType:'json',
+                            success:function(){
+                                //刷新表格
+                                sou();
+                            }
+                        });
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function() {
+
+                    }
+                }
+            }
+
+        });
+        $.ajax({
+            url:"/test/updateUserById",
+            data:{id:id},
+            success:function(data){
+                $("#username").val(data.username)
+                $("#money").val(data.money)
+                $("#id").val(id)
+
+            }
+        })
+    }
+    function openUser(){
+        bootbox.dialog({
+            title:'新增',
+            message: createAddContent("/test/toUserAdd"),//弹框内容
+            closeButton: true,//是否显示关闭按钮
+            buttons : {
+                "success" : {
+                    "label" : "<i class='icon-ok'></i> 保存",
+                    "className" : "btn-sm btn-success",
+                    "callback" : function() {
+                        //提交表单数据：保存
+                        $.ajax({
+                            url:'/test/addUser',//后台请求地址
+                            type:'post',
+                            data:$("#userForm").serialize(),//表单序列化
+                            //dataType:'json',
+                            success:function(){
+                                //刷新表格
+                                sou();
+                            }
+                        });
+                    }
+                },
+                "cancel" : {
+                    "label" : "<i class='icon-info'></i> 取消",
+                    "className" : "btn-sm btn-danger",
+                    "callback" : function() {
+
+                    }
+                }
+            }
+
+        });
+    }
+    function sou(){
+        $('#mytable').bootstrapTable("refresh")
+    }
+    function del(id){
+        $.ajax({
+            url:"/test/delUser",
+            data:{id:id},
+            success:function(){
+                sou()
+                bootbox.alert({
+                    size: "small",
+                    title: "提示",
+                    message: "删除成功！！！",
+                    callback: function(){}
+                });
+            }
+        })
+    }
+    function select(){
+        $('#mytable').bootstrapTable({
+            url:'../test/findUser',//获取数据地址
+            columns:[
+                [
+                    {field:"id",title:"id"},
+                    {field:"username",title:"用户姓名"},
+                    {field:"money",title:"用户余额"},
+                    {field: "qq",title: "操作",formatter:function (value,row,index){
+                            var s=""
+                            s+="<a href='javascript:update("+row.id+")'>修改</a> |"
+                            s+=" <a href='javascript:del("+row.id+")'>删除</a>"
+                            return s
+                        }}
+
+                ]
+            ]
+
+        });
+    }
+</script>
+</html>
