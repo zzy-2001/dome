@@ -77,21 +77,49 @@ public class TestController {
     public String toStuadd(){
         return "stuadd";
     }
+    /**
+     2 * @Author: lxg
+     3 * @Description: 查询
+     4 * @Date: 2021/1/5 21:49
+     5  * @param id
+     6 * @Return: com.jk.pojo.OrderBean
+     7 **/
     @RequestMapping("teasel")
     @ResponseBody
     public HashMap<String,Object> teasel(Integer page,Integer rows){
         return eservice.teasel(page,rows);
     }
+    /**
+     2 * @Author: lxg
+     3 * @Description: 删除
+     4 * @Date: 2021/1/5 21:49
+     5  * @param id
+     6 * @Return: com.jk.pojo.OrderBean
+     7 **/
     @RequestMapping("teadel")
     @ResponseBody
     public void teadel(Integer id){
         eservice.teadel(id);
     }
+    /**
+     2 * @Author: lxg
+     3 * @Description: 回显
+     4 * @Date: 2021/1/5 21:49
+     5  * @param id
+     6 * @Return: com.jk.pojo.OrderBean
+     7 **/
     @RequestMapping("teahuixian")
     @ResponseBody
     public TeaBean teahuixian(Integer id){
         return eservice.teahuixian(id);
     }
+    /**
+     2 * @Author: lxg
+     3 * @Description: 新增
+     4 * @Date: 2021/1/5 21:49
+     5  * @param id
+     6 * @Return: com.jk.pojo.OrderBean
+     7 **/
     @RequestMapping("teaadd")
     @ResponseBody
     public void teaadd(TeaBean tea){
