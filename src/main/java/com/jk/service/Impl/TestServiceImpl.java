@@ -1,9 +1,12 @@
 package com.jk.service.Impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jk.dao.BfhDao;
+import com.jk.dao.BfhDaoEs;
 import com.jk.dao.EsDao;
 import com.jk.dao.TestDao;
 import com.jk.pojo.StuBean;
+import com.jk.pojo.Users;
 import com.jk.service.TestService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -23,6 +26,12 @@ public class TestServiceImpl implements TestService {
     private TestDao dao;
     @Autowired
     private EsDao esDao;
+    //白富豪  dao
+    @Autowired
+    private BfhDao bfhDao;
+    @Autowired
+    private BfhDaoEs bfhDaoEs;
+
     @Autowired
     private ElasticsearchTemplate template;
 
@@ -72,5 +81,54 @@ public class TestServiceImpl implements TestService {
             dao.StuUpdate(stu);
         }
         esDao.save(stu);
+    }
+
+    //用户查询
+    @Override
+    public List<Users> findUser() {
+        List<StuBean> list = new ArrayList<>();
+        Client client = template.getClient();
+        SearchRequestBuilder search  = client.prepareSearch("users").setTypes("200606");
+
+        SearchResponse searchResponse = search.get();
+        SearchHits hits = searchResponse.getHits();
+        Iterator<SearchHit> iterator = hits.iterator();
+        while (iterator.hasNext()){
+            SearchHit next = iterator.next();
+            String str = next.getSourceAsString();
+            //把字符串转换成javabean对象
+            StuBean stuBean = JSONObject.parseObject(str, StuBean.class);
+            list.add(stuBean);
+        }
+
+        return bfhDao.findUser();
+    }
+
+    //用户新增
+    @Override
+    public void addUser(Users users) {
+        if(users.getId() != null ){
+            //修改
+            bfhDao.updateUser(users);
+        }else{
+            //新增
+            bfhDao.addUser(users);
+        }
+
+        bfhDaoEs.save(users);
+    }
+
+    //用户删除
+    @Override
+    public void delUser(Integer id) {
+        bfhDao.delUser(id);
+        bfhDaoEs.deleteById(id);
+    }
+
+    //用户回显
+    @Override
+    public Users updateUserById(Integer id) {
+        Optional<Users> byId = bfhDaoEs.findById(id);
+        return byId.get();
     }
 }
