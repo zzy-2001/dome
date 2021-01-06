@@ -1,0 +1,287 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<!-- 引入bootstap的css文件 -->
+<link rel="stylesheet" href="/js/bootstrap3/css/bootstrap.css">
+<link rel="stylesheet" href="/js/bootstrap3/css/bootstrap-theme.css">
+
+<!-- 引入jquery文件 -->
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+
+<!-- 引入bootstrap的js文件 -->
+<script type="text/javascript" src="/js/bootstrap3/js/bootstrap.min.js"></script>
+
+<!-- 引入表格的css和js文件 -->
+<link rel="stylesheet" href="/js/bootstrap-table/bootstrap-table.css">
+<script src="/js/bootstrap-table/bootstrap-table.js"></script>
+<script src="/js/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+<!-- 引入弹框的js文件 -->
+<script src="/js/bootstrap-bootbox/bootbox.js"></script>
+
+<!-- 引入日期得css和js文件 -->
+<script src="/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script src="/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<link rel="stylesheet" href="/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+<!-- 引入上传文件的css和js文件 -->
+<script src="/js/bootstrap-fileinput/js/fileinput.js"></script>
+<script src="/js/bootstrap-fileinput/js/locales/zh.js"></script>
+<link rel="stylesheet" href="/js/bootstrap-fileinput/css/fileinput.css">
+</head>
+<body>
+	<div id="toolbar">
+		<form class="form-inline">
+		  <input class="btn btn-danger" type="button" value="批量删除" onclick="Alldelete()">
+			<button type="button" onclick="openGame()" class="btn btn-warning glyphicon glyphicon-plus">新增</button>
+		</form>
+	</div>
+	<table class="table" id="myTable"></table>
+</body>
+<script type="text/javascript">
+	$(function(){
+		initUserTable();
+	})
+	//打开修改弹框：回显表单数据
+	function openUpdate(id){
+		bootbox.dialog({
+			title:'修改电影',
+		    message: createAddContent("/test/toAdd"),//弹框内容
+		    closeButton: true,//是否显示关闭按钮
+		    buttons : {
+		        "success" : {
+		            "label" : "<i class='icon-ok'></i> 保存",
+		            "className" : "btn-sm btn-success",
+		            "callback" : function() {
+		            	//提交表单数据：保存
+		            	$.ajax({
+		            		url:'/test/addGame',
+		            		type:'post',
+		            		data:$("#movieFrom").serialize(),//表单序列化
+		            		//dataType:'json',
+		            		success:function(){
+		            			//刷新表格
+		            		searMovie();
+		            		}
+		            	}); 
+			        }
+		        },
+		        "cancel" : {
+		            "label" : "<i class='icon-info'></i> 取消",
+		            "className" : "btn-sm btn-danger",
+		            "callback" : function() {
+		            	
+		            }
+		        }
+		    }
+		    
+		});	
+		$.ajax({
+			url:"/test/findById",
+			type:"post",
+			data:{id:id},
+			success:function(data){
+				$("#game_id").val(data.game_id);
+				$("#game_name").val(data.game_name);
+				$("#game_type").val(data.game_type);
+				$("#game_date").val(data.game_date);
+			}
+		})
+	}
+	//初始化省的数据
+	function initPro(){
+		$.ajax({
+			url:'/test/queryArea',//后台请求地址
+			type:'get',
+			async:false,
+			data:{pid:0},
+			success:function(data){
+				//拼接下拉列表的字符串
+				var str = "<option value='-1'>请选择</option>";
+				for(var i=0;i<data.length;i++){
+					str += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+				}
+				$("#province").html(str);
+			}
+		});	
+	}
+	
+	//加载市的数据
+	function intiCity(pid){
+		$.ajax({
+			url:'/test/queryArea',//后台请求地址
+			type:'get',
+			async:false,
+			data:{pid:pid},
+			success:function(data){
+				//拼接下拉列表的字符串
+				var str = "<option value='-1'>请选择</option>";
+				for(var i=0;i<data.length;i++){
+					str += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+				}
+				$("#city").html(str);
+			}
+		});		
+	}
+	var res;
+	function createAddContent(url){
+		$.ajax({
+			url:url,
+			async:false,//同步，默认是：异步
+			success:function(data){
+				res = data;
+			}
+		});
+		return res;
+	}
+	//打开新增弹框
+	function openGame(){
+		bootbox.dialog({
+			title:'添加电影',
+		    message: createAddContent("/test/toAdd"),//弹框内容
+		    closeButton: true,//是否显示关闭按钮
+		    buttons : {
+		        "success" : {
+		            "label" : "<i class='icon-ok'></i> 保存",
+		            "className" : "btn-sm btn-success",
+		            "callback" : function() {
+		            	//提交表单数据：保存
+		            	$.ajax({
+		            		url:'/test/addGame',//后台请求地址
+		            		type:'post',
+		            		data:$("#movieFrom").serialize(),//表单序列化
+		            		//dataType:'json',
+		            		success:function(){
+		            			//刷新表格
+		            			searMovie();
+		            		}
+		            	}); 
+			        }
+		        },
+		        "cancel" : {
+		            "label" : "<i class='icon-info'></i> 取消",
+		            "className" : "btn-sm btn-danger",
+		            "callback" : function() {
+		            	
+		            }
+		        }
+		    }
+		    
+		});	
+		
+		//初始化省的数据
+		initPro();
+	}
+	//条查
+	function searMovie(){
+		$('#myTable').bootstrapTable('refresh');//刷新表格
+	}
+	//加载表格
+	function initUserTable(){
+		$('#myTable').bootstrapTable({
+			url:'/test/selectPage',//获取数据地址
+			columns:[
+					[
+				  {field:"xx",checkbox:true},
+			      {field:"game_name",title:"电影名称"},
+			      {field:"game_date",title:"上映时间"},
+		          {field:"game_type",title:"类型"},
+		          {field:"zz",title:"操作",formatter:function(value,row,index){
+		        	  str = "";
+					  str += "<input type='button' value='删除' onclick='delete1("+row.game_id+")'>";
+					  str += "<input type='button' value='修改' onclick='openUpdate("+row.game_id+")'>";
+		        	  return str;
+		          }}
+			]
+			],
+		    toolbar:'#toolbar',
+		    pagination:true, //是否展示分页
+		    pageList:[5, 10, 20, 50],//分页组件
+		    pageNumber:1,
+		    pageSize:5,//默认每页条数
+		    //search:true,//是否显示搜索框
+		    //searchText:'试试',//初始化搜索文字
+		    showColumns:false,//是否显示 内容列下拉框
+		    showToggle:false,//是否显示 切换试图（table/card）按钮
+		    showPaginationSwitch:false,//是否显示 数据条数选择框
+		    showRefresh:false,//是否显示刷新按钮
+		    detailView:false,//设置为 true 可以显示详细页面模式。
+		    showFooter:false,//是否显示列脚clickToSelect: true, //是否启用点击选中行
+		    sidePagination:'server',//分页方式：client客户端分页，server服务端分页
+		    striped:true,
+		    queryParams:function(){
+			    return {
+				    page: this.pageNumber,
+				    rows: this.pageSize
+				    //name:$("#name1").val(),
+				    //typeid:$("#typeid").val()
+				    //stDate:$("#stDate").val(),
+				    //enDate:$("#enDate").val()
+			    };
+		    },
+			
+		})
+	}
+	function delete1(id) {
+    	$.ajax({
+			url:"/test/delete1",
+			type:"post",
+			data:{arr:id},
+			success:function(){
+				$('#myTable').bootstrapTable('refresh');
+			}
+		});
+	}
+	function Alldelete() {
+		var arr =  $('#myTable').bootstrapTable('getSelections');
+		//拼接ids
+		var ids = "";//1,3,5
+		for(var i=0;i<arr.length;i++){
+			ids+= (ids=="" ? arr[i].game_id : (","+arr[i].game_id));
+		} 
+		if(arr.length<=0){
+			bootbox.alert({ 
+				  size: "small",
+				  title: "提示",
+				  message: "请至少选择一条！！",
+				  callback: function(){}
+				});		
+			return;
+		}
+		bootbox.confirm({ 
+			  size: "small",
+			  title:"提示",
+			  message: "是否确认删除?", 
+		   	  buttons: {
+		          confirm: {
+		            label: '确定',
+		            className: 'btn-success'
+		          },
+		          cancel: {
+		            label: '取消',
+		            className: 'btn-danger'
+		          }
+		      },			  
+			  callback: function(result){
+				  if(result){
+					$.ajax({
+						url:"/test/delete1",
+						type:"post",
+						data:{arr:ids},
+						success:function(){
+							bootbox.alert({ 
+								  size: "small",
+								  title: "提示",
+								  message: "删除成功！！！",
+								  callback: function(){}
+							});
+							$('#myTable').bootstrapTable('refresh');
+						}
+					});
+			  }
+		  }
+		})
+	}
+</script>
+</html>

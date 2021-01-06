@@ -3,6 +3,16 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jk.dao.TestDao">
+
+	<insert id="addGame" useGeneratedKeys="true" keyProperty="game_id">
+		insert into t_game values(game_id,#{game_name},#{game_type},#{game_date})
+	</insert>
+	<delete id="delete1">
+		delete from t_game where game_id = #{game_id}
+	</delete>
+	<select id="findById" resultType="com.jk.pojo.GameBean">
+		select * from t_game where game_id = #{game_id}
+	</select>
 	<delete id="StuDel">
 		delete from t_stu where id=#{id}
 	</delete>
@@ -10,6 +20,28 @@
 		insert into t_stu(name,age,sex) values(#{name},#{age},#{sex})
 	</insert>
 	<update id="StuUpdate">
-		update t_stu set name=#{name},age=#{age},sex=#{sex} where id=#{id}
+	update t_stu set name=#{name},age=#{age},sex=#{sex} where id=#{id}
+	</update>
+
+	<delete id="orderdel">
+		delete from t_order where id = #{id}
+	</delete>
+	<insert id="orderadd" keyProperty="id" useGeneratedKeys="true">
+		insert into t_order(name,date,price) values(#{name},#{date},#{price})
+	</insert>
+	<select id="findorderByid" resultType="com.jk.pojo.OrderBean">
+		select * from t_order where id = #{id}
+	</select>
+	<update id="uporder">
+		update t_order set name=#{name},price=#{price} where id = #{id}
+	</update>
+	<insert id="teaadd" useGeneratedKeys="true" keyProperty="id">
+		insert into t_tea(name,sex) values(#{name},#{sex})
+	</insert>
+	<delete id="teadel">
+		delete from t_tea where id=#{id}
+	</delete>
+	<update id="teaupdate">
+	update t_tea set name=#{name},sex=#{sex} where id=#{id}
 	</update>
 </mapper>

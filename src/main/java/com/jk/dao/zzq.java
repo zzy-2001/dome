@@ -5,5 +5,5 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EsDao extends ElasticsearchRepository<StuBean,Integer> {
+public interface zzq extends ElasticsearchRepository<StuBean,Integer> {
 }
