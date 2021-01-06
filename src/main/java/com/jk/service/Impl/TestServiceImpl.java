@@ -7,7 +7,6 @@ import com.jk.dao.OrderDao;
 import com.jk.dao.Esdao;
 import com.jk.dao.BfhDao;
 import com.jk.dao.BfhDaoEs;
-import com.jk.dao.EsDao;
 import com.jk.dao.TestDao;
 import com.jk.dao.teadao;
 import com.jk.dao.zzq;
@@ -256,7 +255,6 @@ public class TestServiceImpl implements TestService {
         Optional<Users> byId = bfhDaoEs.findById(id);
         return byId.get();
     }
-}
 
     @Override
     public HashMap<String, Object> teasel(Integer page, Integer rows) {
