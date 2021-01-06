@@ -35,4 +35,12 @@ public interface TestService {
     TeaBean teahuixian(Integer id);
 
     void teaadd(TeaBean tea);
+
+    HashMap<String, Object> findorder(Integer page, Integer rows, OrderBean orderBean);
+
+    void orderdel(Integer id);
+
+    void savesorder(OrderBean orderBean);
+
+    OrderBean findorderByid(Integer id);
 }

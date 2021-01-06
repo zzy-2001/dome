@@ -146,6 +146,56 @@ public class TestController {
         return eservice.findById(id);
     }
 
+    /**
+     2 * @Author: ghx
+     3 * @Description: 订单查询
+     4 * @Date: 2021/1/5 20:58
+     5  * @param page
+     * @param rows
+     * @param orderBean
+    6 * @Return: java.util.HashMap<java.lang.String,java.lang.Object>
+    7 **/
+    @RequestMapping("findorder")
+    @ResponseBody
+    public HashMap<String,Object> findorder(Integer page, Integer rows, OrderBean orderBean){
+        return eservice.findorder(page,rows,orderBean);
+    }
+    /**
+     2 * @Author: ghx
+     3 * @Description: 删除订单
+     4 * @Date: 2021/1/5 21:44
+     5  * @param id
+     6 * @Return: void
+     7 **/
+    @RequestMapping("orderdel")
+    @ResponseBody
+    public void orderdel(Integer id){
+        eservice.orderdel(id);
+    }
+    /**
+     2 * @Author: ghx
+     3 * @Description: 新增
+     4 * @Date: 2021/1/5 21:44
+     5  * @param orderBean
+     6 * @Return: void
+     7 **/
+    @RequestMapping("savesorder")
+    @ResponseBody
+    public void savesorder(OrderBean orderBean){
+        eservice.savesorder(orderBean);
+    }
 
+    /**
+     2 * @Author: ghx
+     3 * @Description: 修改回显
+     4 * @Date: 2021/1/5 21:49
+     5  * @param id
+     6 * @Return: com.jk.pojo.OrderBean
+     7 **/
+    @RequestMapping("findorderByid")
+    @ResponseBody
+    public OrderBean findorderByid(Integer id){
+        return eservice.findorderByid(id);
+    }
 
 }
