@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.jk.dao.OrderDao;
 import com.jk.dao.Esdao;
 import com.jk.dao.TestDao;
+import com.jk.dao.teadao;
 import com.jk.dao.zzq;
 import com.jk.pojo.GameBean;
 import com.jk.pojo.StuBean;
+import com.jk.pojo.TeaBean;
 import com.jk.pojo.OrderBean;
 import com.jk.service.TestService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -98,7 +100,6 @@ public class TestServiceImpl implements TestService {
 
 
 
-    @Override
     public HashMap<String, Object> findorder(Integer page, Integer rows, OrderBean orderBean) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         List<OrderBean> list = new ArrayList<>();
@@ -185,7 +186,6 @@ public class TestServiceImpl implements TestService {
         orderDao.deleteById(id);
     }
 
-    @Override
     public void savesorder(OrderBean orderBean) {
         OrderBean order = dao.findorderByid(orderBean.getId());
         orderBean.setDate(new Date());
@@ -198,6 +198,55 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    public HashMap<String, Object> teasel(Integer page, Integer rows) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        List<TeaBean> list = new ArrayList<>();
+        Client client = template.getClient();
+        SearchRequestBuilder search  = client.prepareSearch("tea").setTypes("20065");
+        //分页
+        search.setFrom((page-1)*rows);//开始位置
+        search.setSize(rows);//没有条数
+        SearchResponse searchResponse = search.get();
+        SearchHits hits = searchResponse.getHits();
+        Iterator<SearchHit> iterator = hits.iterator();
+        while (iterator.hasNext()){
+            SearchHit next = iterator.next();
+            String str = next.getSourceAsString();
+            //把字符串转换成javabean对象
+            TeaBean teaBean = JSONObject.parseObject(str, TeaBean.class);
+            list.add(teaBean);
+        }
+        //获取总条数：
+        long total = hits.getTotalHits();
+        map.put("total",total);
+        map.put("rows",list);
+        return map;
+    }
+    @Autowired
+    private teadao teadao;
+    @Override
+    public void teaadd(TeaBean tea) {
+        if(tea.getId()==null){
+            dao.teaadd(tea);
+        }else{
+            dao.teaupdate(tea);
+        }
+        teadao.save(tea);
+    }
+
+    @Override
+    public void teadel(Integer id) {
+        dao.teadel(id);
+        teadao.deleteById(id);
+    }
+    @Override
+    public TeaBean teahuixian(Integer id) {
+        Optional<TeaBean> byId = teadao.findById(id);
+        return byId.get();
+    }
+
+
+
     public OrderBean findorderByid(Integer id) {
         Optional<OrderBean> byId = orderDao.findById(id);
         OrderBean orderBean = byId.get();

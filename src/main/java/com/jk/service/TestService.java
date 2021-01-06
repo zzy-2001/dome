@@ -6,6 +6,7 @@ import com.jk.pojo.GameBean;
 import java.util.HashMap;
 
 import com.jk.pojo.StuBean;
+import com.jk.pojo.TeaBean;
 import com.jk.pojo.OrderBean;
 
 import java.util.HashMap;
@@ -27,11 +28,11 @@ public interface TestService {
 
     void StuSave(StuBean stu);
 
-    HashMap<String, Object> findorder(Integer page, Integer rows, OrderBean orderBean);
+    HashMap<String, Object> teasel(Integer page, Integer rows);
 
-    void orderdel(Integer id);
+    void teadel(Integer id);
 
-    void savesorder(OrderBean orderBean);
+    TeaBean teahuixian(Integer id);
 
-    OrderBean findorderByid(Integer id);
+    void teaadd(TeaBean tea);
 }

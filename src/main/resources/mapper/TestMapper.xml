@@ -35,4 +35,13 @@
 	<update id="uporder">
 		update t_order set name=#{name},price=#{price} where id = #{id}
 	</update>
+	<insert id="teaadd" useGeneratedKeys="true" keyProperty="id">
+		insert into t_tea(name,sex) values(#{name},#{sex})
+	</insert>
+	<delete id="teadel">
+		delete from t_tea where id=#{id}
+	</delete>
+	<update id="teaupdate">
+	update t_tea set name=#{name},sex=#{sex} where id=#{id}
+	</update>
 </mapper>
