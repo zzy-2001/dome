@@ -2,6 +2,7 @@ package com.jk.controller;
 
 import com.jk.pojo.GameBean;
 import com.jk.pojo.StuBean;
+import com.jk.pojo.TeaBean;
 import com.jk.pojo.OrderBean;
 import com.jk.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,58 +77,27 @@ public class TestController {
     public String toStuadd(){
         return "stuadd";
     }
-
-    /**
-     2 * @Author: ghx
-     3 * @Description: 订单查询
-     4 * @Date: 2021/1/5 20:58
-     5  * @param page
-     * @param rows
-     * @param orderBean
-    6 * @Return: java.util.HashMap<java.lang.String,java.lang.Object>
-    7 **/
-    @RequestMapping("findorder")
+    @RequestMapping("teasel")
     @ResponseBody
-    public HashMap<String,Object> findorder(Integer page, Integer rows, OrderBean orderBean){
-        return eservice.findorder(page,rows,orderBean);
+    public HashMap<String,Object> teasel(Integer page,Integer rows){
+        return eservice.teasel(page,rows);
     }
-    /**
-     2 * @Author: ghx
-     3 * @Description: 删除订单
-     4 * @Date: 2021/1/5 21:44
-     5  * @param id
-     6 * @Return: void
-     7 **/
-    @RequestMapping("orderdel")
+    @RequestMapping("teadel")
     @ResponseBody
-    public void orderdel(Integer id){
-        eservice.orderdel(id);
+    public void teadel(Integer id){
+        eservice.teadel(id);
     }
-    /**
-     2 * @Author: ghx
-     3 * @Description: 新增
-     4 * @Date: 2021/1/5 21:44
-     5  * @param orderBean
-     6 * @Return: void
-     7 **/
-    @RequestMapping("savesorder")
+    @RequestMapping("teahuixian")
     @ResponseBody
-    public void savesorder(OrderBean orderBean){
-        eservice.savesorder(orderBean);
+    public TeaBean teahuixian(Integer id){
+        return eservice.teahuixian(id);
+    }
+    @RequestMapping("teaadd")
+    @ResponseBody
+    public void teaadd(TeaBean tea){
+        eservice.teaadd(tea);
     }
 
-    /**
-     2 * @Author: ghx
-     3 * @Description: 修改回显
-     4 * @Date: 2021/1/5 21:49
-     5  * @param id
-     6 * @Return: com.jk.pojo.OrderBean
-     7 **/
-    @RequestMapping("findorderByid")
-    @ResponseBody
-    public OrderBean findorderByid(Integer id){
-        return eservice.findorderByid(id);
-    }
 
     /**
      * 查询
