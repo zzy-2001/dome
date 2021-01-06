@@ -1,9 +1,6 @@
 package com.jk.controller;
 
-import com.jk.pojo.GameBean;
-import com.jk.pojo.StuBean;
-import com.jk.pojo.TeaBean;
-import com.jk.pojo.OrderBean;
+import com.jk.pojo.*;
 import com.jk.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("test")
@@ -224,6 +222,44 @@ public class TestController {
     @ResponseBody
     public OrderBean findorderByid(Integer id){
         return eservice.findorderByid(id);
+    }
+
+    //用户查询
+    @RequestMapping("findUser")
+    @ResponseBody
+    public List<Users> findUser(){
+
+        return  eservice.findUser();
+    }
+
+    //跳转新增页面
+    @RequestMapping("toUserAdd")
+    public String toUserAdd(){
+
+        return "usersadd";
+    }
+    //用户新增
+    @RequestMapping("addUser")
+    @ResponseBody
+    public void addUser(Users users){
+
+        eservice.addUser(users);
+    }
+
+    //用户删除
+    @RequestMapping("delUser")
+    @ResponseBody
+    public void delUser(Integer id){
+
+        eservice.delUser(id);
+    }
+
+    //用户回显
+    @RequestMapping("updateUserById")
+    @ResponseBody
+    public Users updateUserById(Integer id){
+
+        return eservice.updateUserById(id);
     }
 
 }
