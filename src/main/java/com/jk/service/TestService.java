@@ -6,6 +6,7 @@ import com.jk.pojo.GameBean;
 import java.util.HashMap;
 
 import com.jk.pojo.StuBean;
+import com.jk.pojo.OrderBean;
 
 import java.util.HashMap;
 
@@ -25,4 +26,12 @@ public interface TestService {
     StuBean findStuById(Integer id);
 
     void StuSave(StuBean stu);
+
+    HashMap<String, Object> findorder(Integer page, Integer rows, OrderBean orderBean);
+
+    void orderdel(Integer id);
+
+    void savesorder(OrderBean orderBean);
+
+    OrderBean findorderByid(Integer id);
 }
